@@ -17,8 +17,8 @@ type Exception struct {
 var mapping = Mapping{}
 
 type Mapping map[ExceptionCode]struct {
-	statusCode StatusCode
-	message    string
+	StatusCode StatusCode
+	Message    string
 }
 
 func Init(m Mapping) {
@@ -41,8 +41,8 @@ func Newf(exceptionCode ExceptionCode, args ...interface{}) error {
 	if e, ok := mapping[exceptionCode]; ok {
 		return Exception{
 			ExceptionCode:    exceptionCode,
-			StatusCode:       e.statusCode,
-			ExceptionMessage: fmt.Sprintf(e.message, args...),
+			StatusCode:       e.StatusCode,
+			ExceptionMessage: fmt.Sprintf(e.Message, args...),
 		}
 	}
 
@@ -60,7 +60,7 @@ func NewWith(exceptionCode ExceptionCode, msg string) error {
 func NewfWith(exceptionCode ExceptionCode, msg string, args ...interface{}) error {
 	return Exception{
 		ExceptionCode:    exceptionCode,
-		StatusCode:       mapping[exceptionCode].statusCode,
+		StatusCode:       mapping[exceptionCode].StatusCode,
 		ExceptionMessage: fmt.Sprintf(msg, args...),
 	}
 }
@@ -73,15 +73,15 @@ func Wrapf(err error, exceptionCode ExceptionCode, args ...interface{}) error {
 	if e, ok := mapping[exceptionCode]; ok {
 		return Exception{
 			ExceptionCode:     exceptionCode,
-			StatusCode:        e.statusCode,
-			ExceptionMessage:  fmt.Sprintf(e.message, args...),
+			StatusCode:        e.StatusCode,
+			ExceptionMessage:  fmt.Sprintf(e.Message, args...),
 			InternalException: err,
 		}
 	}
 
 	return Exception{
 		ExceptionCode:     exceptionCode,
-		StatusCode:        mapping[exceptionCode].statusCode,
+		StatusCode:        mapping[exceptionCode].StatusCode,
 		ExceptionMessage:  "Unknown error",
 		InternalException: err,
 	}
@@ -94,7 +94,7 @@ func WrapWith(err error, exceptionCode ExceptionCode, msg string) error {
 func WrapfWith(err error, exceptionCode ExceptionCode, msg string, args ...interface{}) error {
 	return Exception{
 		ExceptionCode:     exceptionCode,
-		StatusCode:        mapping[exceptionCode].statusCode,
+		StatusCode:        mapping[exceptionCode].StatusCode,
 		ExceptionMessage:  fmt.Sprintf(msg, args...),
 		InternalException: err,
 	}
